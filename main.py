@@ -1,15 +1,20 @@
-from typing import Optional
+import time
 
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
+
+from payments.api import router as payments_api
+
 
 app = FastAPI()
+router = APIRouter()
 
+@router.get("/{path:path}", status_code=404)
+def not_implement(path):
+    return {
+        'path': f"/{path}",
+        'status': 'notImplemented',
+        'now':  time.time(),
+    }
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    return {"item_id": item_id, "q": q}
+app.include_router(payments_api, prefix="/api/v1")
+app.include_router(router)
