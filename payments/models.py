@@ -18,7 +18,7 @@ class Restaurant(BaseSQLAlchemy):
         return value
 
 
-class Order(BaseSQLAlchemy):
+class Transaction(BaseSQLAlchemy):
     id = Column(Integer, primary_key=True)
     client = Column(String, nullable=False)
     price = Column(String, nullable=False)
