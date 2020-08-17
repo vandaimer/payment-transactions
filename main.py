@@ -1,5 +1,16 @@
-from app import start
-from db import DB
+import logging
 
-db = DB()
-app = start(db)
+import app as application
+from db import db_connection
+
+def init():
+    try:
+        db_connection.test_connection()
+        db_connection.create_tables()
+    except Exception as e:
+        logging.error(e)
+        raise e
+
+    return application.start()
+
+app = init()
