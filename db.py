@@ -1,3 +1,5 @@
+import logging
+
 from typing import Any, Generator
 from sqlalchemy import create_engine
 from sqlalchemy import MetaData
@@ -6,6 +8,9 @@ from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
 
 from config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
+
+
+log = logging.getLogger(__name__)
 
 
 class DB:
@@ -18,8 +23,7 @@ class DB:
         self.engine = create_engine(self.connection_string)
 
     def session(self):
-        session = sessionmaker(autocommit=False, autoflush=False, bind=self.engine)
-        return session()
+        return SessionContext(sessionmaker(autocommit=False, autoflush=False, bind=self.engine)).session
 
     def test_connection(self):
         session = self.session()
@@ -28,6 +32,27 @@ class DB:
 
     def create_tables(self):
         return BaseSQLAlchemy.metadata.create_all(self.engine)
+
+
+class SessionContext:
+    """
+    This class is a simple context manager around to session to take care of commit/rollback
+    pending operations.
+    """
+    def __init__(self, session):
+        self.session = session()
+
+    def __enter__(self):
+        log.info("Entering session context")
+        return self.session
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if not traceback:
+            log.info("Committing db session pending operations")
+            self.session.commit()
+        else:
+            log.error("Error during db session, rolling back pending operations")
+            self.session.rollback()
 
 
 db_connection = DB()
