@@ -1,14 +1,14 @@
 import time
 
-from fastapi import FastAPI, APIRouter
+from typing import AsyncIterable
+from fastapi import FastAPI, APIRouter, Depends
 
 from payments.api import router as payments_api
 
 
-def start(db):
+def start():
     app = FastAPI()
     router = APIRouter()
-    db.create_tables()
 
     @router.get("/{path:path}", status_code=501)
     def not_implement(path):
