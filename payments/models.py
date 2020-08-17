@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import validates
 
 from db import BaseSQLAlchemy
 
@@ -9,6 +10,12 @@ class Restaurant(BaseSQLAlchemy):
     cnpj = Column(String, nullable=False)
     owner = Column(String, nullable=False)
     phone = Column(String, nullable=False)
+
+    @validates('name', 'cpnj', 'owner', 'phone')
+    def validate_empty_fields(self, key, value):
+        if value == '' or value.strip() == '':
+            raise ValueError(f"Field {key} must be not empty.")
+        return value
 
 
 class Order(BaseSQLAlchemy):
