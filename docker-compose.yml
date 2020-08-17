@@ -5,6 +5,7 @@ services:
     image: postgres
     environment:
       POSTGRES_PASSWORD: "admin"
+      POSTGRES_DB: "payments"
 
   dev:
     build: .
