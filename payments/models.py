@@ -4,20 +4,16 @@ from db import BaseSQLAlchemy
 
 
 class Restaurant(BaseSQLAlchemy):
-    __tablename__ = 'Restaurant'
-
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    cnpj = Column(String)
-    owner = Column(String)
-    phone = Column(String)
+    name = Column(String, nullable=False)
+    cnpj = Column(String, nullable=False)
+    owner = Column(String, nullable=False)
+    phone = Column(String, nullable=False)
 
 
 class Order(BaseSQLAlchemy):
-    __tablename__ = 'Order'
-
     id = Column(Integer, primary_key=True)
-    client = Column(String)
-    price = Column(String)
-    description = Column(String)
-    restaurant = Column(Integer, ForeignKey('Restaurant.id'))
+    client = Column(String, nullable=False)
+    price = Column(String, nullable=False)
+    description = Column(String, nullable=False)
+    restaurant = Column(Integer, ForeignKey('restaurant.id'))
