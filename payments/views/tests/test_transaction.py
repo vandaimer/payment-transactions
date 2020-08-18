@@ -51,3 +51,16 @@ class TestTransaction:
 
         with pytest.raises(ValueError, match="Invalid CNPJ."):
             response = Transaction.all(cnpj_mock, session)
+
+    def test_invalid_cpnj_method(self, mocker):
+        cnpj_mock = 'cnpj_mock'
+
+        invalid_cnpj = Transaction.is_valid_cnpj(cnpj_mock)
+
+        assert invalid_cnpj is None
+
+        mocker.patch('payments.views.transaction.Transaction.is_valid_cnpj', side_effect=lambda x: re.search(f"({cnpj_mock})", cnpj_mock))
+
+        valid_cnpj = Transaction.is_valid_cnpj(cnpj_mock)
+
+        assert valid_cnpj is not None
