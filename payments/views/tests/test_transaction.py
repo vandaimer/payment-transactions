@@ -6,7 +6,7 @@ from alchemy_mock.mocking import UnifiedAlchemyMagicMock, AlchemyMagicMock
 from payments.views import Transaction
 from payments.models import Transaction as TransactionModel
 from payments.models import Restaurant as RestaurantModel
-from payments.schemas import TransactionSchema
+from payments.schemas import TransactionSchema, NewTransactionSchema
 
 
 class TestTransaction:
@@ -77,3 +77,17 @@ class TestTransaction:
         valid_cpf = Transaction.is_valid_cpf(cpf_mock)
 
         assert valid_cpf is not None
+
+    def test_validate_transaction(self, mocker):
+        mock_document = 'mock_document'
+        valor = 1
+        mocker.patch('payments.views.transaction.Transaction.is_valid_cnpj', side_effect=lambda x: re.search(f"({mock_document})", mock_document))
+        mocker.patch('payments.views.transaction.Transaction.is_valid_cpf', side_effect=lambda x: re.search(f"({mock_document})", mock_document))
+
+        transaction_mock = NewTransactionSchema(estabelecimento=mock_document, cliente=mock_document, valor=valor, descricao="", restaurant=1)
+
+        expected = {**transaction_mock.dict(), 'estabelecimento': mock_document, 'cliente': mock_document}
+
+        response = Transaction.validate_transaction(transaction_mock)
+
+        assert response == expected
