@@ -26,5 +26,20 @@ class Transaction:
         return ReturnNewTransactionSchema(aceito=True)
 
     @staticmethod
+    def validate_transaction(transaction):
+        cnpj = Transaction.is_valid_cnpj(transaction.estabelecimento)
+
+        if cnpj is None:
+            return None
+
+        cnpj = ''.join(cnpj.groups())
+
+        if transaction.valor <= 0:
+            return None
+
+        return {**transaction.dict(), 'estabelecimento': cnpj}
+
+
+    @staticmethod
     def is_valid_cnpj(cnpj):
         return re.search(Transaction.CNPJ_REGEX, cnpj)
