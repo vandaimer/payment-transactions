@@ -1,3 +1,4 @@
+import re
 import mock
 from alchemy_mock.mocking import UnifiedAlchemyMagicMock
 
@@ -11,12 +12,15 @@ class TestTransaction:
     def test_all(self, mocker):
         cnpj_mock = 'cnpj_mock'
         string_mock = 'string_mock'
+        mocker.patch('payments.views.transaction.Transaction.is_valid_cnpj', side_effect=lambda x: re.search(f"({cnpj_mock})", cnpj_mock))
+
         expected_restaurant = {
             'name': string_mock,
             'cnpj': string_mock,
             'owner': string_mock,
             'phone': string_mock,
         }
+
         restaurant_mock = RestaurantModel(**expected_restaurant)
         transaction_mock = TransactionModel(client=string_mock, price=1, description=string_mock, restaurant=1)
 

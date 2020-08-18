@@ -11,6 +11,13 @@ class Transaction:
 
     @staticmethod
     def all(cnpj, db):
+        cnpj = Transaction.is_valid_cnpj(str(cnpj))
+
+        if cnpj is None:
+            raise ValueError('Invalid CNPJ.')
+
+        cnpj = ''.join(cnpj.groups())
+
         restaurant = db.query(RestaurantModel).filter(RestaurantModel.cnpj == str(cnpj)).one()
         transactions = db.query(TransactionModel).filter(TransactionModel.restaurant == restaurant.id).all()
         return ListOfTransactionSchema(estabelecimento=restaurant, recebimentos=transactions)
@@ -51,7 +58,6 @@ class Transaction:
             return None
 
         return {**transaction.dict(), 'estabelecimento': cnpj, 'cliente': cpf}
-
 
     @staticmethod
     def is_valid_cnpj(cnpj):
