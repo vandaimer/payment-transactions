@@ -64,3 +64,16 @@ class TestTransaction:
         valid_cnpj = Transaction.is_valid_cnpj(cnpj_mock)
 
         assert valid_cnpj is not None
+
+    def test_invalid_cpf_method(self, mocker):
+        cpf_mock = 'cpf_mock'
+
+        invalid_cpf = Transaction.is_valid_cpf(cpf_mock)
+
+        assert invalid_cpf is None
+
+        mocker.patch('payments.views.transaction.Transaction.is_valid_cpf', side_effect=lambda x: re.search(f"({cpf_mock})", cpf_mock))
+
+        valid_cpf = Transaction.is_valid_cpf(cpf_mock)
+
+        assert valid_cpf is not None
