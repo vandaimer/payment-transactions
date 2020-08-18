@@ -7,6 +7,7 @@ from payments.schemas import ListOfTransactionSchema, ReturnNewTransactionSchema
 
 class Transaction:
     CNPJ_REGEX = '^(\d{2})\.?(\d{3})\.?(\d{3})\/?(\d{4})\-?(\d{2})$'
+    CPF_REGEX = '^(\d{3})\.?(\d{3})\.?(\d{3})\-?(\d{2})$'
 
     @staticmethod
     def all(cnpj, db):
@@ -48,3 +49,7 @@ class Transaction:
     @staticmethod
     def is_valid_cnpj(cnpj):
         return re.search(Transaction.CNPJ_REGEX, cnpj)
+
+    @staticmethod
+    def is_valid_cpf(cpf):
+        return re.search(Transaction.CPF_REGEX, cpf)
