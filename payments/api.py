@@ -13,8 +13,14 @@ router = APIRouter()
 
 
 @router.get("/healthcheck")
-def healthcheck():
-    return Healthcheck.status()
+def healthcheck(db: Session = Depends(async_session)):
+    try:
+        return Healthcheck.status(db)
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail='I am not live! :(',
+        )
 
 
 @router.post("/restaurant", response_model=RestaurantSchema, status_code=201, tags=["Restaurant"])

@@ -2,5 +2,6 @@
 class Healthcheck:
 
     @staticmethod
-    def status():
-        return { "status": "OK" }
+    def status(db):
+        db.execute("SELECT 1")
+        return {'status': 'OK'}
