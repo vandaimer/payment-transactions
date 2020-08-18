@@ -40,10 +40,17 @@ class Transaction:
 
         cnpj = ''.join(cnpj.groups())
 
+        cpf = Transaction.is_valid_cpf(transaction.cliente)
+
+        if cpf is None:
+            return None
+
+        cpf = ''.join(cpf.groups())
+
         if transaction.valor <= 0:
             return None
 
-        return {**transaction.dict(), 'estabelecimento': cnpj}
+        return {**transaction.dict(), 'estabelecimento': cnpj, 'cliente': cpf}
 
 
     @staticmethod
