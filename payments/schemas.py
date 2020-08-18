@@ -20,3 +20,6 @@ class NewTransactionSchema(BaseModel):
     valor: float
     descricao: str
 
+
+class ReturnNewTransactionSchema(BaseModel):
+    aceito: bool
