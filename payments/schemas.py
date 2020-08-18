@@ -12,3 +12,11 @@ TransactionSchema = sqlalchemy_to_pydantic(Transaction, exclude={"id"})
 class ListOfTransactionSchema(BaseModel):
     estabelecimento: RestaurantSchema = None
     recebimentos: List[TransactionSchema] = []
+
+
+class NewTransactionSchema(BaseModel):
+    estabelecimento: str
+    cliente: str
+    valor: float
+    descricao: str
+
