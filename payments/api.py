@@ -14,7 +14,7 @@ def healthcheck():
     return Healthcheck.status()
 
 
-@router.post("/restaurant", response_model=RestaurantSchema, status_code=201)
+@router.post("/restaurant", response_model=RestaurantSchema, status_code=201, tags=["Restaurant"])
 def restaurante(restaurant: RestaurantSchema, db: Session = Depends(async_session)):
     try:
         return Restaurant.create(restaurant, db)
