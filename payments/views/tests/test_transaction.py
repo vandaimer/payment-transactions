@@ -1,6 +1,7 @@
 import re
 import mock
-from alchemy_mock.mocking import UnifiedAlchemyMagicMock
+import pytest
+from alchemy_mock.mocking import UnifiedAlchemyMagicMock, AlchemyMagicMock
 
 from payments.views import Transaction
 from payments.models import Transaction as TransactionModel
@@ -43,3 +44,10 @@ class TestTransaction:
 
         assert estabelecimento == expected_restaurant
         assert len(response.recebimentos) == 1
+
+    def test_all_invalid_cnpj(self, mocker):
+        session = AlchemyMagicMock()
+        cnpj_mock = 'cnpj_mock'
+
+        with pytest.raises(ValueError, match="Invalid CNPJ."):
+            response = Transaction.all(cnpj_mock, session)
