@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 
 from payments.views import Healthcheck, Restaurant, Transaction
-from payments.schemas import RestaurantSchema, ListOfTransactionSchema
+from payments.schemas import RestaurantSchema, ListOfTransactionSchema, NewTransactionSchema, ReturnNewTransactionSchema
 
 from db import db_connection, async_session
 
@@ -46,4 +46,21 @@ def transacoes(cnpj: int, db: Session = Depends(async_session)):
         raise HTTPException(
             status_code=400,
             detail=f"Error to retrieve transactions with cnpj: {cnpj}",
+        )
+
+
+@router.post("/transacao", response_model=ReturnNewTransactionSchema, tags=["Transaction"], status_code=201)
+def transacoes(transaction: NewTransactionSchema, db: Session = Depends(async_session)):
+    try:
+        return Transaction.create(transaction, db)
+    except NoResultFound as e:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Restaurant not found with cnpj",
+        )
+    except Exception as e:
+        print("e", e)
+        raise HTTPException(
+            status_code=400,
+            detail=f"Error to retrieve transactions with cnpj",
         )
