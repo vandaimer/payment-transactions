@@ -16,9 +16,14 @@ class Transaction:
 
     @staticmethod
     def create(transaction, db):
-        restaurant = db.query(RestaurantModel).filter(RestaurantModel.cnpj == str(transaction.estabelecimento)).one()
+        transaction_validated = Transaction.validate_transaction(transaction)
 
-        new_transaction = TransactionModel(client=transaction.cliente, price=transaction.valor, description=transaction.descricao, restaurant=restaurant.id)
+        if transaction_validated is None:
+            return ReturnNewTransactionSchema(aceito=False)
+
+        restaurant = db.query(RestaurantModel).filter(RestaurantModel.cnpj == transaction_validated.get('estabelecimento')).one()
+
+        new_transaction = TransactionModel(client=transaction_validated.get('cliente'), price=transaction_validated.get('valor'), description=transaction_validated.get('descricao'), restaurant=restaurant.id)
 
         db.add(new_transaction)
         db.commit()
