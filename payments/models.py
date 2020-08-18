@@ -23,4 +23,4 @@ class Transaction(BaseSQLAlchemy):
     client = Column(String, nullable=False)
     price = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    restaurant = Column(Integer, ForeignKey('restaurant.id'))
+    restaurant = Column(Integer, ForeignKey('restaurant.id'), nullable=False)
