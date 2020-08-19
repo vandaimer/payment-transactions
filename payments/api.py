@@ -48,7 +48,7 @@ def transacoes(cnpj: int, db: Session = Depends(async_session)):
         return Transaction.all(cnpj, db)
     except NoResultFound:
         raise HTTPException(
-            status_code=400,
+            status_code=404,
             detail=f"Restaurant not found with cnpj: {cnpj}",
         )
     except Exception:
