@@ -35,7 +35,7 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - Clientes não precisam estar adicionados previamente
 - Clientes não precisavam ser adicionados em nenhum momento
 - Restaurante já estaria adicionar, tanto que fiz uma rota para adicionar um e simular essa situação
-- Tentei fazer o mais simples possível para mostrar conhecimento e não ter overengineering
+- Implementação simples e funcional e flexivél para extensão
 
 ### Melhorias
 ##### A primeira verão da API dado os requisitos estão OK, porém há melhorias na mesma, segue a lista:
