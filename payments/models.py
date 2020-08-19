@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import validates
 
 from db import BaseSQLAlchemy
@@ -21,6 +21,6 @@ class Restaurant(BaseSQLAlchemy):
 class Transaction(BaseSQLAlchemy):
     id = Column(Integer, primary_key=True)
     client = Column(String, nullable=False)
-    price = Column(String, nullable=False)
+    price = Column(Float, nullable=False)
     description = Column(String, nullable=False)
     restaurant = Column(Integer, ForeignKey('restaurant.id'), nullable=False)
