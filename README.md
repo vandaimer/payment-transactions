@@ -1,7 +1,7 @@
 # PDV (ponto de venda)
 
 ### Tecnologias
-- [FastAPI](fastapi.tiangolo.com) - REST API Framework (Tem suporte para GrapQL)
+- [FastAPI](fastapi.tiangolo.com) - REST API Framework (Tem suporte para GraphQL)
 - [SQLAlchemy](https://www.sqlalchemy.org/) - Abstração para fazer queries SQL
 - [Pytest](https://docs.pytest.org/en/stable/) - biblioteca para implementar testes unitários
 - Docker
