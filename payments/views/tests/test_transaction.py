@@ -33,6 +33,12 @@ class TestTransaction:
             client=self.string_mock,
             description=self.string_mock,
             restaurant=1)
+        self.new_transaction = NewTransactionSchema(
+            estabelecimento=self.cnpj_mock,
+            cliente=self.cpf_mock,
+            valor=1,
+            descricao="",
+            restaurant=1)
 
     def test_all(self, mocker):
         price = 1
@@ -103,23 +109,22 @@ class TestTransaction:
         assert valid_cpf is not None
 
     def test_validate_transaction(self, mocker):
-        mock_document = 'mock_document'
         price = 1
-        mock_is_valid_cnpj(mocker, mock_document)
-        mock_is_valid_cpf(mocker, mock_document)
-
-        new_transaction = NewTransactionSchema(
-            estabelecimento=mock_document,
-            cliente=mock_document,
-            valor=price,
-            descricao="",
-            restaurant=1)
+        mock_is_valid_cnpj(mocker, self.cnpj_mock)
+        mock_is_valid_cpf(mocker, self.cpf_mock)
 
         expected = {
-            **new_transaction.dict(),
-            'estabelecimento': mock_document,
-            'cliente': mock_document}
+            **self.new_transaction.dict(),
+            'estabelecimento': self.cnpj_mock,
+            'cliente': self.cpf_mock}
 
-        response = Transaction.validate_transaction(new_transaction)
+        response = Transaction.validate_transaction(self.new_transaction)
 
+        assert response is not None
         assert response == expected
+
+    def test_validate_transaction_invalid_cnpj(self, mocker):
+        self.new_transaction.estabelecimento = 'InvalidCNPJ'
+        response = Transaction.validate_transaction(self.new_transaction)
+
+        assert response is None
