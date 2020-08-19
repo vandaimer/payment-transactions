@@ -2,11 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 
+from db import async_session
 from payments.views import Healthcheck, Restaurant, Transaction
 from payments.schemas import RestaurantSchema, \
     ListOfTransactionSchema, NewTransactionSchema, ReturnNewTransactionSchema
-
-from db import async_session
 
 
 router = APIRouter()

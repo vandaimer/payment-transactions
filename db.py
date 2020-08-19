@@ -5,7 +5,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
 
-
 from config import DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
 
 
