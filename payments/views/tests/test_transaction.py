@@ -180,3 +180,17 @@ class TestTransaction:
         session.query.return_value.filter.\
             assert_called_once_with(RestaurantModel.cnpj == self.cnpj_mock)
         session.commit.assert_called_once()
+
+    def test_create_on_failure(self, mocker):
+        restaurant_id = 1
+        self.restaurant_mock.id = restaurant_id
+
+        mocker.patch(
+            'payments.views.transaction.Transaction.validate_transaction',
+            side_effect=lambda x: None)
+
+        session = AlchemyMagicMock()
+
+        response = Transaction.create(self.new_transaction, session)
+
+        assert response.aceito is False
