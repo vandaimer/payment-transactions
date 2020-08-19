@@ -3,7 +3,8 @@ import re
 from payments.models import Transaction as TransactionModel
 from payments.models import Restaurant as RestaurantModel
 from payments.schemas import ListOfTransactionSchema, \
-    ReturnNewTransactionSchema
+    ReturnNewTransactionSchema, RestaurantResponseSchema, \
+    TransactionResponseSchema
 
 
 class Transaction:
@@ -34,6 +35,13 @@ class Transaction:
             total_recebido=total_price,
         )
 
+    @staticmethod
+    def build_response(transaction):
+        return TransactionResponseSchema(
+            cliente=transaction.client,
+            valor=transaction.price,
+            descricao=transaction.description
+        )
     @staticmethod
     def create(transaction, db):
         transaction = Transaction.validate_transaction(transaction)
