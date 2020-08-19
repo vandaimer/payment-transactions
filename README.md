@@ -29,7 +29,7 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 
 - Rodar `docker-compose up tests`
 - Rodar `docker-compose up flake8` - Irá mostrar algo caso tiver algo a ser corrigido
-- Para gerar o relatório da cobertura de teste precisa ser rodado na manualmente, mas é possível adicionar no docker-compose também. `pytest - -cov - report html - -cov = .` Após isso é só abrir no navegador o arquivo `htmlcov/index.html`.
+- Para gerar o relatório da cobertura de teste precisa ser rodado na manualmente, mas é possível adicionar no docker-compose também. `pytest --cov -report-html --cov = .` Após isso é só abrir no navegador o arquivo `htmlcov/index.html`.
 
 ### Decições
 - Clientes não precisam estar adicionados previamente
