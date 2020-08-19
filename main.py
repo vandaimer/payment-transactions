@@ -5,6 +5,7 @@ from db import db_connection
 
 log = logging.getLogger(__name__)
 
+
 def init():
     try:
         db_connection.test_connection()
@@ -14,5 +15,6 @@ def init():
         raise e
 
     return application.start()
+
 
 app = init()

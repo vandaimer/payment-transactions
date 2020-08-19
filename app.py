@@ -1,7 +1,6 @@
 import time
 
-from typing import AsyncIterable
-from fastapi import FastAPI, APIRouter, Depends
+from fastapi import FastAPI, APIRouter
 
 from payments.api import router as payments_api
 
@@ -15,7 +14,7 @@ def start():
         return {
             'path': f"/{path}",
             'status': 'notImplemented',
-            'now':  time.time(),
+            'now': time.time(),
         }
 
     app.include_router(payments_api, prefix="/api/v1")

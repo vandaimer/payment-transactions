@@ -1,4 +1,3 @@
-import mock
 from alchemy_mock.mocking import AlchemyMagicMock
 
 from payments.views import Healthcheck
