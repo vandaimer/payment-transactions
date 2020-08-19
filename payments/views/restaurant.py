@@ -1,4 +1,5 @@
 from payments.models import Restaurant as RestaurantModel
+from payments.schemas import RestaurantResponseSchema
 
 
 class Restaurant:
@@ -10,3 +11,12 @@ class Restaurant:
         db.commit()
 
         return new_restaurant
+
+    @staticmethod
+    def build_response(restaurant):
+        return RestaurantResponseSchema(
+            nome=restaurant.name,
+            cnpj=restaurant.cnpj,
+            dono=restaurant.owner,
+            telefone=restaurant.phone,
+        )
