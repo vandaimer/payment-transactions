@@ -22,3 +22,9 @@ services:
     command: pytest -vv
     volumes:
       - .:/app
+
+  flake8:
+    build: .
+    command: flake8 .
+    volumes:
+      - .:/app
