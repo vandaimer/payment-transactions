@@ -23,7 +23,7 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - `POST /api/v1/transacao` - Rota solicitada
 - `GET /api/v1/transacoes/estabelecimento?cnpj=CNPJ` - Rota solicitada
 - `GET /api/v1/healthcheck` - Rota adicional
-- `POST /api/v1/restaurant` - Rota adicional
+- `POST /api/v1/restaurant` - Rota adicional - Não há nenhuma validação nesta rota
 
 ### Outros comandos
 
