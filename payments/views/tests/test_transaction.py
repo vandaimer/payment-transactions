@@ -80,7 +80,7 @@ class TestTransaction:
 
         estabelecimento = dict(response.estabelecimento)
 
-        assert estabelecimento == self.expected_restaurant
+        assert estabelecimento['cnpj'] == self.expected_restaurant['cnpj']
         assert len(response.recebimentos) == len([self.transaction_mock])
         assert response.total_recebido == price
 
