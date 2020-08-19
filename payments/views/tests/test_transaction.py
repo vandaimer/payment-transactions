@@ -13,6 +13,7 @@ class TestTransaction:
     def test_all(self, mocker):
         cnpj_mock = 'cnpj_mock'
         string_mock = 'string_mock'
+        price = 1
         mocker.patch(
             'payments.views.transaction.Transaction.is_valid_cnpj',
             side_effect=lambda x: re.search(
@@ -29,7 +30,7 @@ class TestTransaction:
         restaurant_mock = RestaurantModel(**expected_restaurant)
         transaction_mock = TransactionModel(
             client=string_mock,
-            price=1,
+            price=price,
             description=string_mock,
             restaurant=1)
 
@@ -52,7 +53,8 @@ class TestTransaction:
         estabelecimento = dict(response.estabelecimento)
 
         assert estabelecimento == expected_restaurant
-        assert len(response.recebimentos) == 1
+        assert len(response.recebimentos) == len([transaction_mock])
+        assert response.total_recebido == price
 
     def test_all_invalid_cnpj(self, mocker):
         session = AlchemyMagicMock()
