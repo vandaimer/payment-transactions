@@ -29,7 +29,10 @@ class Transaction:
         total_price = sum(list_of_prices)
 
         return ListOfTransactionSchema(
-            estabelecimento=restaurant, recebimentos=transactions, total_recebido=total_price)
+            estabelecimento=restaurant,
+            recebimentos=transactions,
+            total_recebido=total_price,
+        )
 
     @staticmethod
     def create(transaction, db):
