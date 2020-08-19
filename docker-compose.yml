@@ -10,6 +10,10 @@ services:
   dev:
     build: .
     command: uvicorn main:app --host 0.0.0.0 --reload
+    environment:
+      DB_HOST: db
+      DB_NAME: "payments"
+      DB_PASSWORD: "admin"
     volumes:
       - .:/app
     ports:
