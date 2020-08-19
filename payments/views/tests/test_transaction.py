@@ -128,3 +128,12 @@ class TestTransaction:
         response = Transaction.validate_transaction(self.new_transaction)
 
         assert response is None
+
+    def test_validate_transaction_invalid_cpf(self, mocker):
+        self.new_transaction.cliente = 'InvalidCPF'
+        self.new_transaction.estabelecimento = '45283163000167'
+
+        response = Transaction.validate_transaction(self.new_transaction)
+
+        assert response is None
+
