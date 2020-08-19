@@ -21,11 +21,15 @@ class Transaction:
 
         restaurant = db.query(RestaurantModel).filter(
             RestaurantModel.cnpj == str(cnpj)).one()
+
         transactions = db.query(TransactionModel).filter(
             TransactionModel.restaurant == restaurant.id).all()
 
+        list_of_prices = [float(item.price) for item in transactions]
+        total_price = sum(list_of_prices)
+
         return ListOfTransactionSchema(
-            estabelecimento=restaurant, recebimentos=transactions)
+            estabelecimento=restaurant, recebimentos=transactions, total_recebido=total_price)
 
     @staticmethod
     def create(transaction, db):
