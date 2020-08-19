@@ -9,120 +9,117 @@ from payments.models import Restaurant as RestaurantModel
 from payments.schemas import NewTransactionSchema
 
 
+def mock_is_valid_cnpj(mocker, cnpj):
+    mocker.patch(
+        'payments.views.transaction.Transaction.is_valid_cnpj',
+        side_effect=lambda x: re.search(
+            f"({cnpj})",
+            cnpj))
+
+def mock_is_valid_cpf(mocker, cpf):
+    mocker.patch(
+        'payments.views.transaction.Transaction.is_valid_cpf',
+        side_effect=lambda x: re.search(
+            f"({cpf})",
+            cpf))
+
+
 class TestTransaction:
+    def setup_method(self, method):
+        self.cnpj_mock = 'cnpj_mock'
+        self.cpf_mock = 'cpf_mock'
+        self.string_mock = 'string_mock'
+        self.transaction_mock = TransactionModel(
+            client=self.string_mock,
+            description=self.string_mock,
+            restaurant=1)
+
     def test_all(self, mocker):
-        cnpj_mock = 'cnpj_mock'
-        string_mock = 'string_mock'
         price = 1
+        self.transaction_mock.price = price
         mocker.patch(
             'payments.views.transaction.Transaction.is_valid_cnpj',
             side_effect=lambda x: re.search(
-                f"({cnpj_mock})",
-                cnpj_mock))
+                f"({self.cnpj_mock})",
+                self.cnpj_mock))
 
         expected_restaurant = {
-            'name': string_mock,
-            'cnpj': string_mock,
-            'owner': string_mock,
-            'phone': string_mock,
+            'name': self.string_mock,
+            'cnpj': self.string_mock,
+            'owner': self.string_mock,
+            'phone': self.string_mock,
         }
 
         restaurant_mock = RestaurantModel(**expected_restaurant)
-        transaction_mock = TransactionModel(
-            client=string_mock,
-            price=price,
-            description=string_mock,
-            restaurant=1)
 
         session = UnifiedAlchemyMagicMock(data=[
             (
                 [mock.call.query(RestaurantModel),
-                 mock.call.filter(RestaurantModel.cnpj == cnpj_mock)],
+                 mock.call.filter(RestaurantModel.cnpj == self.cnpj_mock)],
                 [restaurant_mock]
             ),
             (
                 [mock.call.query(TransactionModel),
                  mock.call.filter(
                      TransactionModel.restaurant == restaurant_mock.id)],
-                [transaction_mock]
+                [self.transaction_mock]
             ),
         ])
 
-        response = Transaction.all(cnpj_mock, session)
+        response = Transaction.all(self.cnpj_mock, session)
 
         estabelecimento = dict(response.estabelecimento)
 
         assert estabelecimento == expected_restaurant
-        assert len(response.recebimentos) == len([transaction_mock])
+        assert len(response.recebimentos) == len([self.transaction_mock])
         assert response.total_recebido == price
 
     def test_all_invalid_cnpj(self, mocker):
         session = AlchemyMagicMock()
-        cnpj_mock = 'cnpj_mock'
 
         with pytest.raises(ValueError, match="Invalid CNPJ."):
-            Transaction.all(cnpj_mock, session)
+            Transaction.all(self.cnpj_mock, session)
 
     def test_invalid_cpnj_method(self, mocker):
-        cnpj_mock = 'cnpj_mock'
-
-        invalid_cnpj = Transaction.is_valid_cnpj(cnpj_mock)
+        invalid_cnpj = Transaction.is_valid_cnpj(self.cnpj_mock)
 
         assert invalid_cnpj is None
 
-        mocker.patch(
-            'payments.views.transaction.Transaction.is_valid_cnpj',
-            side_effect=lambda x: re.search(
-                f"({cnpj_mock})",
-                cnpj_mock))
+        mock_is_valid_cnpj(mocker, self.cnpj_mock)
 
-        valid_cnpj = Transaction.is_valid_cnpj(cnpj_mock)
+        valid_cnpj = Transaction.is_valid_cnpj(self.cnpj_mock)
 
         assert valid_cnpj is not None
 
     def test_invalid_cpf_method(self, mocker):
-        cpf_mock = 'cpf_mock'
-
-        invalid_cpf = Transaction.is_valid_cpf(cpf_mock)
+        invalid_cpf = Transaction.is_valid_cpf(self.cpf_mock)
 
         assert invalid_cpf is None
 
-        mocker.patch(
-            'payments.views.transaction.Transaction.is_valid_cpf',
-            side_effect=lambda x: re.search(
-                f"({cpf_mock})",
-                cpf_mock))
+        mock_is_valid_cpf(mocker, self.cpf_mock)
 
-        valid_cpf = Transaction.is_valid_cpf(cpf_mock)
+        valid_cpf = Transaction.is_valid_cpf(self.cpf_mock)
 
         assert valid_cpf is not None
 
     def test_validate_transaction(self, mocker):
         mock_document = 'mock_document'
-        valor = 1
-        mocker.patch(
-            'payments.views.transaction.Transaction.is_valid_cnpj',
-            side_effect=lambda x: re.search(
-                f"({mock_document})",
-                mock_document))
-        mocker.patch(
-            'payments.views.transaction.Transaction.is_valid_cpf',
-            side_effect=lambda x: re.search(
-                f"({mock_document})",
-                mock_document))
+        price = 1
+        mock_is_valid_cnpj(mocker, mock_document)
+        mock_is_valid_cpf(mocker, mock_document)
 
-        transaction_mock = NewTransactionSchema(
+        new_transaction = NewTransactionSchema(
             estabelecimento=mock_document,
             cliente=mock_document,
-            valor=valor,
+            valor=price,
             descricao="",
             restaurant=1)
 
         expected = {
-            **transaction_mock.dict(),
+            **new_transaction.dict(),
             'estabelecimento': mock_document,
             'cliente': mock_document}
 
-        response = Transaction.validate_transaction(transaction_mock)
+        response = Transaction.validate_transaction(new_transaction)
 
         assert response == expected
