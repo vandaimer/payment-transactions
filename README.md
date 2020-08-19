@@ -11,13 +11,13 @@
 
 - Clone do repositório
 - Instalar docker e docker-compose
-- Rodar `docker-compose up db` para iniciar o PostgreSQL
+- Rodar `docker-compose up -d db` para iniciar o PostgreSQL
 - Rocker `docker-compose up dev` para iniciar o projecto em modo de desenvolvimento
 - Rodar no terminal para adicionar um restaurante **(Rota implementada para auxilar no teste)**
 ```bash
 curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: application/json" - H  "Content-Type: application/json" - d "{\"name\":\"Restaurante da esquina\",\"cnpj\":\"20050627000164\",\"owner\":\"Luiz Filipe\",\"phone\":\"32132132121\"}"
 ```
-- Acessa em `http://localhost:8000/docs` e usar a API como solocitado
+- Para acessar a documentação da API, basta usar o seguinte link: `http://localhost:8000/docs`
 
 ### Rotas da API
 - `POST /api/v1/transacao` - Rota solicitada
@@ -31,6 +31,12 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - Rodar `docker-compose up flake8` - Irá mostrar algo caso tiver algo a ser corrigido
 - Para gerar o relatório da cobertura de teste precisa ser rodado na manualmente, mas é possível adicionar no docker-compose também. `pytest - -cov - report html - -cov = .` Após isso é só abrir no navegador o arquivo `htmlcov/index.html`.
 
+### Decições
+- Clientes não precisam estar adicionados previamente
+- Clientes não precisavam ser adicionados em nenhum momento
+- Restaurante já estaria adicionar, tanto que fiz uma rota para adicionar um e simular essa situação
+- Implementação simples e funcional e flexivél para extensão
+
 ### Melhorias
 ##### A primeira verão da API dado os requisitos estão OK, porém há melhorias na mesma, segue a lista:
 
@@ -41,3 +47,5 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - CNPJ e CPF foram validados apenas em número de caracteres e formatação, mas dependo do caso é necessário fazer os calculos corretos para validar os mesmo.
 - Criar um Dockerfile que não instale as dependencias de desenvolvimento.
 - Criar uma entrada no docker-compose para gerar o relatório da cobertura de teste.
+- Implementar migrations usando [sqlalchemy-migrate](https://pypi.org/project/sqlalchemy-migrate/)
+- Adicionar mais logs em parte importantes do sistema
