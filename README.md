@@ -17,7 +17,7 @@
 ```bash
 curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: application/json" - H  "Content-Type: application/json" - d "{\"name\":\"Restaurante da esquina\",\"cnpj\":\"20050627000164\",\"owner\":\"Luiz Filipe\",\"phone\":\"32132132121\"}"
 ```
-- Acessa em `http://localhost:8000/docs` e usar a API como solocitado
+- Para acessar a doc bastar usar o seguinte link: `http://localhost:8000/docs` e usar a API como necessário
 
 ### Rotas da API
 - `POST /api/v1/transacao` - Rota solicitada
