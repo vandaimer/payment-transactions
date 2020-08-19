@@ -10,7 +10,7 @@ class Restaurant:
         db.add(new_restaurant)
         db.commit()
 
-        return new_restaurant
+        return Restaurant.build_response(new_restaurant)
 
     @staticmethod
     def build_response(restaurant):

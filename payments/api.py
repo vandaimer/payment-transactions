@@ -5,7 +5,8 @@ from sqlalchemy.orm.exc import NoResultFound
 from db import async_session
 from payments.views import Healthcheck, Restaurant, Transaction
 from payments.schemas import RestaurantSchema, \
-    ListOfTransactionSchema, NewTransactionSchema, ReturnNewTransactionSchema
+    ListOfTransactionSchema, NewTransactionSchema, \
+    ReturnNewTransactionSchema, RestaurantResponseSchema
 
 
 router = APIRouter()
@@ -22,7 +23,7 @@ def healthcheck(db: Session = Depends(async_session)):
         )
 
 
-@router.post("/restaurant", response_model=RestaurantSchema,
+@router.post("/restaurant", response_model=RestaurantResponseSchema,
              status_code=201, tags=["Restaurant"])
 def restaurante(restaurant: RestaurantSchema,
                 db: Session = Depends(async_session)):
