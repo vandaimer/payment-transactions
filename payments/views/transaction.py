@@ -23,6 +23,7 @@ class Transaction:
             RestaurantModel.cnpj == str(cnpj)).one()
         transactions = db.query(TransactionModel).filter(
             TransactionModel.restaurant == restaurant.id).all()
+
         return ListOfTransactionSchema(
             estabelecimento=restaurant, recebimentos=transactions)
 
