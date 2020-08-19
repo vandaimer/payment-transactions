@@ -27,7 +27,9 @@ class TestRestaurant:
 
         session.commit.assert_called_once()
 
-        assert response.name == expected_restaurant['name']
+        print("response", response)
+
+        assert response.nome== expected_restaurant['name']
         assert response.cnpj == expected_restaurant['cnpj']
-        assert response.owner == expected_restaurant['owner']
-        assert response.phone == expected_restaurant['phone']
+        assert response.dono == expected_restaurant['owner']
+        assert response.telefone == expected_restaurant['phone']
