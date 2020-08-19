@@ -16,6 +16,7 @@ def mock_is_valid_cnpj(mocker, cnpj):
             f"({cnpj})",
             cnpj))
 
+
 def mock_is_valid_cpf(mocker, cpf):
     mocker.patch(
         'payments.views.transaction.Transaction.is_valid_cpf',
@@ -29,16 +30,27 @@ class TestTransaction:
         self.cnpj_mock = 'cnpj_mock'
         self.cpf_mock = 'cpf_mock'
         self.string_mock = 'string_mock'
+
         self.transaction_mock = TransactionModel(
             client=self.string_mock,
             description=self.string_mock,
             restaurant=1)
+
         self.new_transaction = NewTransactionSchema(
             estabelecimento=self.cnpj_mock,
             cliente=self.cpf_mock,
             valor=1,
             descricao="",
             restaurant=1)
+
+        self.expected_restaurant = {
+            'name': self.string_mock,
+            'cnpj': self.string_mock,
+            'owner': self.string_mock,
+            'phone': self.string_mock,
+        }
+
+        self.restaurant_mock = RestaurantModel(**self.expected_restaurant)
 
     def test_all(self, mocker):
         price = 1
@@ -49,25 +61,16 @@ class TestTransaction:
                 f"({self.cnpj_mock})",
                 self.cnpj_mock))
 
-        expected_restaurant = {
-            'name': self.string_mock,
-            'cnpj': self.string_mock,
-            'owner': self.string_mock,
-            'phone': self.string_mock,
-        }
-
-        restaurant_mock = RestaurantModel(**expected_restaurant)
-
         session = UnifiedAlchemyMagicMock(data=[
             (
                 [mock.call.query(RestaurantModel),
                  mock.call.filter(RestaurantModel.cnpj == self.cnpj_mock)],
-                [restaurant_mock]
+                [self.restaurant_mock]
             ),
             (
                 [mock.call.query(TransactionModel),
                  mock.call.filter(
-                     TransactionModel.restaurant == restaurant_mock.id)],
+                     TransactionModel.restaurant == self.restaurant_mock.id)],
                 [self.transaction_mock]
             ),
         ])
@@ -76,7 +79,7 @@ class TestTransaction:
 
         estabelecimento = dict(response.estabelecimento)
 
-        assert estabelecimento == expected_restaurant
+        assert estabelecimento == self.expected_restaurant
         assert len(response.recebimentos) == len([self.transaction_mock])
         assert response.total_recebido == price
 
@@ -109,7 +112,6 @@ class TestTransaction:
         assert valid_cpf is not None
 
     def test_validate_transaction(self, mocker):
-        price = 1
         mock_is_valid_cnpj(mocker, self.cnpj_mock)
         mock_is_valid_cpf(mocker, self.cpf_mock)
 
@@ -146,3 +148,34 @@ class TestTransaction:
         response = Transaction.validate_transaction(self.new_transaction)
 
         assert response is None
+
+    def test_create(self, mocker):
+        restaurant_id = 1
+        self.restaurant_mock.id = restaurant_id
+
+        mocker.patch(
+            'payments.views.transaction.Transaction.validate_transaction',
+            side_effect=lambda x: self.new_transaction.dict())
+
+        session = UnifiedAlchemyMagicMock(data=[
+            (
+                [mock.call.query(RestaurantModel),
+                 mock.call.filter(RestaurantModel.cnpj == self.cnpj_mock)],
+                [self.restaurant_mock]
+            ),
+        ])
+
+        transaction = TransactionModel(
+            client=self.new_transaction.cliente,
+            price=self.new_transaction.valor,
+            description=self.new_transaction.descricao,
+            restaurant=restaurant_id,
+        )
+
+        session.add(transaction)
+
+        Transaction.create(self.new_transaction, session)
+
+        session.query.return_value.filter.\
+            assert_called_once_with(RestaurantModel.cnpj == self.cnpj_mock)
+        session.commit.assert_called_once()
