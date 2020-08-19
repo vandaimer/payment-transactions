@@ -137,3 +137,12 @@ class TestTransaction:
 
         assert response is None
 
+    def test_validate_transaction_invalid_price(self, mocker):
+        mock_is_valid_cnpj(mocker, self.cnpj_mock)
+        mock_is_valid_cpf(mocker, self.cpf_mock)
+
+        self.new_transaction.valor = 0
+
+        response = Transaction.validate_transaction(self.new_transaction)
+
+        assert response is None
