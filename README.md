@@ -11,7 +11,7 @@
 
 - Clone do repositório
 - Instalar docker e docker-compose
-- Rodar `docker-compose up db` para iniciar o PostgreSQL
+- Rodar `docker-compose up -d db` para iniciar o PostgreSQL
 - Rocker `docker-compose up dev` para iniciar o projecto em modo de desenvolvimento
 - Rodar no terminal para adicionar um restaurante **(Rota implementada para auxilar no teste)**
 ```bash
@@ -47,3 +47,4 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - CNPJ e CPF foram validados apenas em número de caracteres e formatação, mas dependo do caso é necessário fazer os calculos corretos para validar os mesmo.
 - Criar um Dockerfile que não instale as dependencias de desenvolvimento.
 - Criar uma entrada no docker-compose para gerar o relatório da cobertura de teste.
+- Implementar migrations usando [sqlalchemy-migrate](https://pypi.org/project/sqlalchemy-migrate/)
