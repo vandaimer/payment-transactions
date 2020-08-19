@@ -22,10 +22,9 @@ class TransactionResponseSchema(BaseModel):
     descricao: str
 
 class ListOfTransactionSchema(BaseModel):
-    estabelecimento: RestaurantSchema = None
-    recebimentos: List[TransactionSchema] = []
+    estabelecimento: RestaurantResponseSchema = None
+    recebimentos: List[TransactionResponseSchema] = []
     total_recebido: float
-
 
 class NewTransactionSchema(BaseModel):
     estabelecimento: str
