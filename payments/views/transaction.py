@@ -1,5 +1,6 @@
 import re
 
+from payments.views import Restaurant
 from payments.models import Transaction as TransactionModel
 from payments.models import Restaurant as RestaurantModel
 from payments.schemas import ListOfTransactionSchema, \
@@ -29,9 +30,13 @@ class Transaction:
         list_of_prices = [float(item.price) for item in transactions]
         total_price = sum(list_of_prices)
 
+        transactions_built = [
+            Transaction.build_response(item) for item in transactions
+        ]
+
         return ListOfTransactionSchema(
-            estabelecimento=restaurant,
-            recebimentos=transactions,
+            estabelecimento=Restaurant.build_response(restaurant),
+            recebimentos=transactions_built,
             total_recebido=total_price,
         )
 
@@ -42,6 +47,7 @@ class Transaction:
             valor=transaction.price,
             descricao=transaction.description
         )
+
     @staticmethod
     def create(transaction, db):
         transaction = Transaction.validate_transaction(transaction)
