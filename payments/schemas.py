@@ -16,6 +16,10 @@ class RestaurantResponseSchema(BaseModel):
     dono: str
     telefone: str
 
+class TransactionResponseSchema(BaseModel):
+    cliente: str
+    valor: float
+    descricao: str
 
 class ListOfTransactionSchema(BaseModel):
     estabelecimento: RestaurantSchema = None
