@@ -31,6 +31,12 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - Rodar `docker-compose up flake8` - Irá mostrar algo caso tiver algo a ser corrigido
 - Para gerar o relatório da cobertura de teste precisa ser rodado na manualmente, mas é possível adicionar no docker-compose também. `pytest - -cov - report html - -cov = .` Após isso é só abrir no navegador o arquivo `htmlcov/index.html`.
 
+### Decições
+- Clientes não precisam estar adicionados previamente
+- Clientes não precisavam ser adicionados em nenhum momento
+- Restaurante já estaria adicionar, tanto que fiz uma rota para adicionar um e simular essa situação
+- Tentei fazer o mais simples possível para mostrar conhecimento e não ter overengineering
+
 ### Melhorias
 ##### A primeira verão da API dado os requisitos estão OK, porém há melhorias na mesma, segue a lista:
 
