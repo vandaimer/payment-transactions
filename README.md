@@ -20,7 +20,17 @@ curl -X POST "http://localhost:8000/api/v1/restaurant"  -H  "accept: application
 - Para acessar a documentação da API, basta usar o seguinte link: `http://localhost:8000/docs`
 
 ### Rotas da API
-- `POST /api/v1/transacao` - Rota solicitada
+- `POST /api/v1/transacao` - Rota solicitada - Exemplo de paylod
+
+```json
+{
+	"estabelecimento": "45.283.163/0001-67",
+	"cliente": "094.214.930-01",
+	"valor": 1000.01,
+	"descricao": "Almoço em restaurante chique pago via Shipay!"
+}
+```
+
 - `GET /api/v1/transacoes/estabelecimento?cnpj=CNPJ` - Rota solicitada
 - `GET /api/v1/healthcheck` - Rota adicional
 - `POST /api/v1/restaurant` - Rota adicional - **Não há nenhuma validação nesta rota**
