@@ -7,13 +7,15 @@ from payments.schemas import RestaurantSchema
 
 
 class TestRestaurant:
+    def setup_method(self, method):
+        self.string_mock = 'string_mock'
+
     def test_create(self, mocker):
-        string_mock = 'string_mock'
         expected_restaurant = {
-            'name': string_mock,
-            'cnpj': string_mock,
-            'owner': string_mock,
-            'phone': string_mock,
+            'name': self.string_mock,
+            'cnpj': self.string_mock,
+            'owner': self.string_mock,
+            'phone': self.string_mock,
         }
         session = UnifiedAlchemyMagicMock(data=[
             (
@@ -33,3 +35,20 @@ class TestRestaurant:
         assert response.cnpj == expected_restaurant['cnpj']
         assert response.dono == expected_restaurant['owner']
         assert response.telefone == expected_restaurant['phone']
+
+    def test_build_responde(self, mocker):
+        restaurant = RestaurantModel(name=self.string_mock,
+                                cnpj=self.string_mock,
+                                owner=self.string_mock,
+                                phone=self.string_mock)
+
+        response = Restaurant.build_response(restaurant)
+
+        expected = {
+            'nome': self.string_mock,
+            'cnpj': self.string_mock,
+            'dono': self.string_mock,
+            'telefone': self.string_mock,
+        }
+
+        assert response.dict() == expected
