@@ -33,7 +33,16 @@ curl -X POST "http://localhost:8000/api/v1/restaurant"  -H  "accept: application
 
 - `GET /api/v1/transacoes/estabelecimento?cnpj=CNPJ` - Rota solicitada
 - `GET /api/v1/healthcheck` - Rota adicional
-- `POST /api/v1/restaurant` - Rota adicional - **Não há nenhuma validação nesta rota**
+- `POST /api/v1/restaurant` - Rota adicional - **Não há nenhuma validação nesta rota** - Examplo de payload
+
+```json
+{
+	"name": "string",
+	"cnpj": "45283163000167", # CNPJ precisa ser somente números
+	"owner": "string",
+	"phone": "string"
+}
+```
 
 ### Outros comandos
 
