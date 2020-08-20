@@ -50,4 +50,4 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - Criar um Dockerfile que não instale as dependencias de desenvolvimento.
 - Criar uma entrada no docker-compose para gerar o relatório da cobertura de teste.
 - Implementar migrations usando [sqlalchemy-migrate](https://pypi.org/project/sqlalchemy-migrate/)
-- Adicionar mais logs em parte importantes do sistema
+- Adicionar mais logs em parte importantes do sistema. Essa lib parece interesante (https://github.com/Delgan/loguru)
