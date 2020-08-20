@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
@@ -11,14 +13,17 @@ from payments.schemas import RestaurantSchema, \
 
 router = APIRouter()
 
+logger = logging.getLogger(__name__)
+
 
 @router.get("/healthcheck")
 def healthcheck(db: Session = Depends(async_session)):
     try:
         return Healthcheck.status(db)
-    except Exception:
+    except Exception as e:
+        log.exception(e)
         raise HTTPException(
-            status_code=400,
+            status_code=503,
             detail='I am not live! :(',
         )
 
@@ -30,11 +35,13 @@ def restaurante(restaurant: RestaurantSchema,
     try:
         return Restaurant.create(restaurant, db)
     except ValueError as e:
+        logger.error(e)
         raise HTTPException(
             status_code=400,
             detail=str(e),
         )
-    except Exception:
+    except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=400,
             detail="Error to create a new restaurant.",
@@ -46,12 +53,14 @@ def restaurante(restaurant: RestaurantSchema,
 def transacoes(cnpj: int, db: Session = Depends(async_session)):
     try:
         return Transaction.all(cnpj, db)
-    except NoResultFound:
+    except NoResultFound as e:
+        logger.error(e)
         raise HTTPException(
             status_code=404,
             detail=f"Restaurant not found with cnpj: {cnpj}",
         )
-    except Exception:
+    except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=400,
             detail=f"Error to retrieve transactions with cnpj: {cnpj}",
@@ -63,14 +72,17 @@ def transacoes(cnpj: int, db: Session = Depends(async_session)):
 def nova_transacoes(transaction: NewTransactionSchema,
                     db: Session = Depends(async_session)):
     cnpj = transaction.estabelecimento
+
     try:
         return Transaction.create(transaction, db)
-    except NoResultFound:
+    except NoResultFound as e:
+        logger.error(e)
         raise HTTPException(
             status_code=400,
             detail=f"Restaurant not found with cnpj: {cnpj}",
         )
-    except Exception:
+    except Exception as e:
+        logger.error(e)
         raise HTTPException(
             status_code=400,
             detail=f"Error to retrieve transactions with cnpj: {cnpj}",
