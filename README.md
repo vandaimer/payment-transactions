@@ -23,7 +23,7 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - `POST /api/v1/transacao` - Rota solicitada
 - `GET /api/v1/transacoes/estabelecimento?cnpj=CNPJ` - Rota solicitada
 - `GET /api/v1/healthcheck` - Rota adicional
-- `POST /api/v1/restaurant` - Rota adicional - Não há nenhuma validação nesta rota
+- `POST /api/v1/restaurant` - Rota adicional - **Não há nenhuma validação nesta rota**
 
 ### Outros comandos
 
@@ -31,11 +31,13 @@ curl - X POST "http://localhost:8000/api/v1/restaurant" - H  "accept: applicatio
 - Rodar `docker-compose up flake8` - Irá mostrar algo caso tiver algo a ser corrigido
 - Para gerar o relatório da cobertura de teste precisa ser rodado na manualmente, mas é possível adicionar no docker-compose também. `pytest --cov-report html --cov=.` Após isso é só abrir no navegador o arquivo `htmlcov/index.html`.
 
-### Decições
+### Decisões
 - Clientes não precisam estar adicionados previamente
 - Clientes não precisavam ser adicionados em nenhum momento
-- Restaurante já estaria adicionar, tanto que fiz uma rota para adicionar um e simular essa situação
-- Implementação simples e funcional e flexivél para extensão
+- Restaurante já estaria adicionado, tanto que fiz uma rota para adicionar um e simular essa situação
+- Chamei o estabaleciomento de **Restaurante**, mas poderia ser algo mais genérico
+- Implementação simples, funcional e flexivél para extensão
+- Os retornos de CPF and CNPJ não retornam formatados. Eu julgo como boa prática salvar somente os números e retonar somente números para cada frontend tratar como preferir. Obs: O retorno com a formatação poderia ser feito, mas decidi não implementar dada a justificativa anterior.
 
 ### Melhorias
 ##### A primeira verão da API dado os requisitos estão OK, porém há melhorias na mesma, segue a lista:
