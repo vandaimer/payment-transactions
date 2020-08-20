@@ -27,6 +27,12 @@ services:
     volumes:
       - .:/app
 
+  coverage:
+    build: .
+    command: pytest --cov-report html --cov=.
+    volumes:
+      - .:/app
+
   flake8:
     build: .
     command: flake8 .
