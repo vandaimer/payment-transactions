@@ -65,7 +65,7 @@ curl -X POST "http://localhost:8000/api/v1/restaurant"  -H  "accept: application
 - Melhorar os testes para usar fixture do pytest.
 - Fazer validações a nível de [schema](https://github.com/vandaimer/payment-transactions/blob/master/payments/schemas.py).
 - Organizar as mensagens de errors para padronizar as mesmas.
-- CNPJ e CPF foram validados apenas em número de caracteres e formatação, mas dependo do caso é necessário fazer os calculos corretos para validar os mesmo.
+- CNPJ e CPF foram validados apenas em número de caracteres e formatação, mas dependo do caso é necessário fazer os cálculos corretos para validar os mesmo.
 - Criar um Dockerfile que não instale as dependencias de desenvolvimento.
 - Criar uma entrada no docker-compose para gerar o relatório da cobertura de teste.
 - Implementar migrations usando [sqlalchemy-migrate](https://pypi.org/project/sqlalchemy-migrate/)
