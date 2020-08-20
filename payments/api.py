@@ -21,7 +21,7 @@ def healthcheck(db: Session = Depends(async_session)):
     try:
         return Healthcheck.status(db)
     except Exception as e:
-        log.exception(e)
+        logger.exception(e)
         raise HTTPException(
             status_code=503,
             detail='I am not live! :(',

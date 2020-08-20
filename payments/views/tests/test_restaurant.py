@@ -31,16 +31,18 @@ class TestRestaurant:
 
         print("response", response)
 
-        assert response.nome== expected_restaurant['name']
+        assert response.nome == expected_restaurant['name']
         assert response.cnpj == expected_restaurant['cnpj']
         assert response.dono == expected_restaurant['owner']
         assert response.telefone == expected_restaurant['phone']
 
     def test_build_responde(self, mocker):
-        restaurant = RestaurantModel(name=self.string_mock,
-                                cnpj=self.string_mock,
-                                owner=self.string_mock,
-                                phone=self.string_mock)
+        restaurant = RestaurantModel(
+            name=self.string_mock,
+            cnpj=self.string_mock,
+            owner=self.string_mock,
+            phone=self.string_mock
+        )
 
         response = Restaurant.build_response(restaurant)
 

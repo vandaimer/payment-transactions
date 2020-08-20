@@ -4,8 +4,7 @@ from payments.views import Restaurant
 from payments.models import Transaction as TransactionModel
 from payments.models import Restaurant as RestaurantModel
 from payments.schemas import ListOfTransactionSchema, \
-    ReturnNewTransactionSchema, RestaurantResponseSchema, \
-    TransactionResponseSchema
+    ReturnNewTransactionSchema, TransactionResponseSchema
 
 
 class Transaction:
