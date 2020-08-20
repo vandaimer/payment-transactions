@@ -15,7 +15,7 @@
 - Rocker `docker-compose up dev` para iniciar o projecto em modo de desenvolvimento
 - Rodar no terminal para adicionar um restaurante **(Rota implementada para auxilar no teste)**
 ```bash
-curl -X POST "http://localhost:8000/api/v1/restaurant"  -H  "accept: application/json" -H  "Content-Type: application/json" -d '{\"name\":\"Restaurante da esquina\",\"cnpj\":\"45283163000167\",\"owner\":\"Luiz Filipe\",\"phone\":\"32132132121\"}'
+curl -X POST "http://localhost:8000/api/v1/restaurant"  -H  "accept: application/json" -H  "Content-Type: application/json" -d '{"name":"Restaurante da esquina","cnpj":"45283163000167","owner":"Luiz Filipe","phone":"32132132121"}'
 ```
 - Para acessar a documentação da API, basta usar o seguinte link: `http://localhost:8000/docs`
 
