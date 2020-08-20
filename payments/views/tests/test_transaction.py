@@ -194,3 +194,15 @@ class TestTransaction:
         response = Transaction.create(self.new_transaction, session)
 
         assert response.aceito is False
+
+    def test_build_responde(self, mocker):
+        self.transaction_mock.price = 1
+        response = Transaction.build_response(self.transaction_mock)
+
+        expected = {
+            'cliente': self.transaction_mock.client,
+            'valor': self.transaction_mock.price,
+            'descricao': self.transaction_mock.description,
+        }
+
+        assert response.dict() == expected
